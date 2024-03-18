@@ -1,0 +1,269 @@
+basePath: /
+definitions:
+  actor.Actor:
+    properties:
+      birthday:
+        type: string
+      films:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      sex:
+        type: string
+    type: object
+  handler.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  movie.Movie:
+    properties:
+      date_of_issue:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      rating:
+        type: number
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a RESTful API service for managing movies and actors
+  title: Vk Movies API
+  version: "1.0"
+paths:
+  /api/actor:
+    delete:
+      description: Удаление актера из базы данных
+      operationId: deleteActor
+      parameters:
+        - description: ID актера
+          in: query
+          name: actorID
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Actor deleted successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Удаление актера
+      tags:
+        - Actor
+      security:
+        - ApiKeyAuth: []
+    patch:
+      consumes:
+        - application/json
+      description: Обновление существующего актера в базе данных
+      operationId: updateActor
+      parameters:
+        - description: ID актера
+          in: query
+          name: actorID
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Actor updated successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Обновление актера
+      tags:
+        - Actor
+      security:
+        - ApiKeyAuth: []
+    post:
+      consumes:
+        - application/json
+      description: Создание нового актера в базе данных
+      operationId: createActor
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Actor created successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Создание актера
+      tags:
+        - Actor
+      security:
+        - ApiKeyAuth: []
+  /api/actors:
+    get:
+      description: Получение списка всех актеров из базы данных
+      operationId: getActors
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/actor.Actor'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Получение списка актеров
+      tags:
+        - Actors
+  /api/movie:
+    delete:
+      description: Удаление фильма из базы данных
+      operationId: deleteMovie
+      parameters:
+        - description: ID фильма
+          in: query
+          name: movieID
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Movie deleted successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Удаление фильма
+      tags:
+        - Movie
+      security:
+        - ApiKeyAuth: []
+    patch:
+      consumes:
+        - application/json
+      description: Обновление существующего фильма в базе данных
+      operationId: updateMovie
+      parameters:
+        - description: ID фильма
+          in: query
+          name: movieID
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Movie updated successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Обновление фильма
+      tags:
+        - Movie
+      security:
+        - ApiKeyAuth: []
+    post:
+      consumes:
+        - application/json
+      description: Создание нового фильма в базе данных
+      operationId: createMovie
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Movie created successfully
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Создание фильма
+      tags:
+        - Movie
+      security:
+        - ApiKeyAuth: []
+  /api/moviesByActorName:
+    get:
+      description: Поиск фильмов по части имени актера в базе данных
+      operationId: findMoviesByActorNameFragment
+      parameters:
+        - description: Фрагмент имени актера
+          in: query
+          name: actorNameFragment
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/movie.Movie'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Поиск фильмов по фрагменту имени актера
+      tags:
+        - Movies
+  /api/moviesByTitle:
+    get:
+      description: Поиск фильмов по части названия в базе данных
+      operationId: findMoviesByTitleFragment
+      parameters:
+        - description: Фрагмент названия фильма
+          in: query
+          name: titleFragment
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/movie.Movie'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Поиск фильмов по фрагменту названия
+      tags:
+        - Movies
+swagger: "2.0"

@@ -1,0 +1,7 @@
+env: "dev" # dev, prod
+host_db: "localhost"
+user_db: "api_service"
+password_db: "12345678"
+name_db: "VK_MOVIES"
+admin:
+  auth_token: "token"
